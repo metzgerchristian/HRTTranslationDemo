@@ -69,29 +69,6 @@ function main(params) {
         });
 
 
-
-
-      // *******TODO**********
-      // - Call the language identification API of the translation service
-      // see: https://cloud.ibm.com/apidocs/language-translator?code=node#identify-language
-      // - if successful, resolve exactly like shown below with the
-      // language that is most probable the best one in the "language" property
-      // and the confidence it got detected in the "confidence" property
-
-      // in case of errors during the call resolve with an error message according to the pattern
-      // found in the catch clause below
-
-      /*resolve({
-        statusCode: 200,
-        body: {
-          text: identifyParams.text,
-          language: "",
-          confidence: 0.5,
-        },
-        headers: { 'Content-Type': 'application/json' }
-      });
-      */
-
     } catch (err) {
       console.error('Error while initializing the AI service', err);
       resolve(getTheErrorResponse('Error while communicating with the language service', defaultLanguage));
