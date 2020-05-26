@@ -45,6 +45,8 @@ function main(params) {
     text: 'Language translator translates text from one language to another'
   };
 
+  var response;
+
 
   return new Promise(function (resolve, reject) {
 
@@ -53,6 +55,7 @@ function main(params) {
       languageTranslator.identify(identifyParams)
         .then(identifiedLanguages => {
           console.log(JSON.stringify(identifiedLanguages, null, 2));
+          response = identifiedLanguages;
         })
         .catch(err => {
           console.error('Error while initializing the AI service', err);
@@ -76,8 +79,8 @@ function main(params) {
         statusCode: 200,
         body: {
           text: identifyParams.text,
-          language: identifiedLanguages[0].language,
-          confidence: identifiedLanguages[0].confidence,
+          language: response[0].language,
+          confidence: response[0].confidence,
         },
         headers: { 'Content-Type': 'application/json' }
       });
