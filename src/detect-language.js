@@ -33,29 +33,35 @@ function main(params) {
    */
   const defaultLanguage = 'en';
 
-  const languageTranslator = new LanguageTranslatorV3({
-    version: '2018-05-01',
-    authenticator: new IamAuthenticator({
-      apikey: 'rMEJ0JpoHy6bT4LyQ8SQP3pPmvqXGxLCqYL3GzelYROZ',
-    }),
-    url: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/e780ff06-5c9c-43e2-8ceb-3a51268e0bc0',
-  });
-
-  const identifyParams = {
-    text: 'Language translator translates text from one language to another'
-  };
-
-  var response;
-
 
   return new Promise(function (resolve, reject) {
 
-    try {
+    const languageTranslator = new LanguageTranslatorV3({
+      version: '2018-05-01',
+      authenticator: new IamAuthenticator({
+        apikey: 'rMEJ0JpoHy6bT4LyQ8SQP3pPmvqXGxLCqYL3GzelYROZ',
+      }),
+      url: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/e780ff06-5c9c-43e2-8ceb-3a51268e0bc0',
+    });
 
+    const identifyParams = {
+      text: 'Language translator translates text from one language to another'
+    };
+
+    try {
       languageTranslator.identify(identifyParams)
         .then(identifiedLanguages => {
-          console.log(JSON.stringify(identifiedLanguages, null, 2));
-          response = identifiedLanguages;
+
+          resolve({
+            statusCode: 200,
+            body: {
+              text: identifyParams.text,
+              language: identifiedLanguages.result.languages[0].language,
+              confidence: identifiedLanguages.result.languages[0].confidence,
+            },
+            headers: { 'Content-Type': 'application/json' }
+          });
+
         })
         .catch(err => {
           console.error('Error while initializing the AI service', err);
@@ -75,16 +81,16 @@ function main(params) {
       // in case of errors during the call resolve with an error message according to the pattern
       // found in the catch clause below
 
-      resolve({
+      /*resolve({
         statusCode: 200,
         body: {
           text: identifyParams.text,
-          language: response[0].language,
-          confidence: response[0].confidence,
+          language: "",
+          confidence: 0.5,
         },
         headers: { 'Content-Type': 'application/json' }
       });
-
+      */
 
     } catch (err) {
       console.error('Error while initializing the AI service', err);
