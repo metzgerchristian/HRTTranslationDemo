@@ -75,9 +75,9 @@ function main(params) {
       resolve({
         statusCode: 200,
         body: {
-          text: params.text,
-          language: "<Best Language>",
-          confidence: 0.5,
+          text: identifyParams.text,
+          language: identifiedLanguages[0].language,
+          confidence: identifiedLanguages[0].confidence,
         },
         headers: { 'Content-Type': 'application/json' }
       });
