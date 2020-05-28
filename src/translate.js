@@ -47,9 +47,11 @@ function main(params) {
       });
 
       const translateParams = {
-        text: 'Hello, we are Group 11!',
-        modelId: 'en-nl',
+        text: 'Hallo wir sind Gruppe 11 und das hier ist unsere Pipeline zur Spracherkennung und Übersetzung.',
+        modelId: 'de-en',
       };
+
+      var words = translateParams.text.split("\\s+");
 
       languageTranslator.translate(translateParams)
         .then(translationResult => {
@@ -57,9 +59,11 @@ function main(params) {
           resolve({
             statusCode: 200,
             body: {
-              translations: translationResult.result.translations[0].translation,
-              words: 1,
-              characters: 11,
+              input: translateParams.text,
+              translation: translationResult.result.translations[0].translation,
+              modelId: 'de-en',
+              words: words.leght,
+              characters: translateParams.text.length,
             },
             headers: { 'Content-Type': 'application/json' }
           });
