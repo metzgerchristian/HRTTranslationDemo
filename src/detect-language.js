@@ -56,8 +56,6 @@ function main(params) {
             headers: { 'Content-Type': 'application/json' }
           });
 
-          return(params = {text: params.text, language: identifiedLanguages.result.languages[0].language});
-
         })
         .catch(err => {
           console.error('Error while initializing the AI service', err);
