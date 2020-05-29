@@ -37,7 +37,7 @@ function main(params) {
 
     try {
 
-
+      console.table(params);
       const languageTranslator = new LanguageTranslatorV3({
         version: '2018-05-01',
         authenticator: new IamAuthenticator({
@@ -47,11 +47,10 @@ function main(params) {
       });
 
       const translateParams = {
-        text: 'Hallo wir sind Gruppe 11 und das hier ist unsere Pipeline zur Spracherkennung und Übersetzung.',
-        modelId: 'de-en',
+        text: params.text,
+        modelId: params.language + '-en',
       };
 
-      var words = translateParams.text.split("\\s+");
 
       languageTranslator.translate(translateParams)
         .then(translationResult => {
@@ -61,9 +60,7 @@ function main(params) {
             body: {
               input: translateParams.text,
               translation: translationResult.result.translations[0].translation,
-              modelId: 'de-en',
-              words: words.leght,
-              characters: translateParams.text.length,
+              fromTO: params.language + '-en',
             },
             headers: { 'Content-Type': 'application/json' }
           });

@@ -32,8 +32,6 @@ function main(params) {
    * The default language to choose in case of an error
    */
   const defaultLanguage = 'en';
-
-
   return new Promise(function (resolve, reject) {
 
     const languageTranslator = new LanguageTranslatorV3({
@@ -44,23 +42,21 @@ function main(params) {
       url: 'https://api.eu-de.language-translator.watson.cloud.ibm.com/instances/e780ff06-5c9c-43e2-8ceb-3a51268e0bc0',
     });
 
-    const identifyParams = {
-      text: 'Language translator translates text from one language to another'
-    };
-
     try {
-      languageTranslator.identify(identifyParams)
+      languageTranslator.identify(params)
         .then(identifiedLanguages => {
 
           resolve({
             statusCode: 200,
             body: {
-              text: identifyParams.text,
+              input: params.text,
               language: identifiedLanguages.result.languages[0].language,
               confidence: identifiedLanguages.result.languages[0].confidence,
             },
             headers: { 'Content-Type': 'application/json' }
           });
+
+          return(params = {text: params.text, language: identifiedLanguages.result.languages[0].language});
 
         })
         .catch(err => {
