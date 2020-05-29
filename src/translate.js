@@ -37,7 +37,6 @@ function main(params) {
 
     try {
 
-      console.table(params);
       const languageTranslator = new LanguageTranslatorV3({
         version: '2018-05-01',
         authenticator: new IamAuthenticator({
@@ -47,9 +46,10 @@ function main(params) {
       });
 
       const translateParams = {
-        text: params.text,
-        modelId: params.language + '-en',
+        text: params.body.input,
+        modelId: params.body.language + "-en",
       };
+
 
 
       languageTranslator.translate(translateParams)
@@ -60,7 +60,7 @@ function main(params) {
             body: {
               input: translateParams.text,
               translation: translationResult.result.translations[0].translation,
-              fromTO: params.language + '-en',
+              translation_sheme: translateParams.modelId,
             },
             headers: { 'Content-Type': 'application/json' }
           });
